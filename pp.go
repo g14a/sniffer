@@ -21,6 +21,11 @@ var (
 	handle      *pcap.Handle
 )
 
+var (
+	side  *color.Color
+	value *color.Color
+)
+
 func main() {
 	// Open device
 	handle, err = pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
@@ -37,25 +42,33 @@ func main() {
 
 func printPacketInfo(packet gopacket.Packet) {
 	// Let's see if the packet is an ethernet packet
-	// ethernetLayer := packet.Layer(layers.LayerTypeEthernet)
-	// if ethernetLayer != nil {
-	// 	fmt.Println("Ethernet layer detected.")
-	// 	ethernetPacket, _ := ethernetLayer.(*layers.Ethernet)
+	ethernetLayer := packet.Layer(layers.LayerTypeEthernet)
+	if ethernetLayer != nil {
+		ethernetPacket, _ := ethernetLayer.(*layers.Ethernet)
 
-	// 	fmt.Println("Source MAC: ", ethernetPacket.SrcMAC)
-	// 	fmt.Println("Destination MAC: ", ethernetPacket.DstMAC)
-	// 	// Ethernet type is typically IPv4 but could be ARP or other
-	// 	fmt.Println("Ethernet type: ", ethernetPacket.EthernetType)
-	// 	fmt.Println()
-	// }
+		side = color.New(color.FgHiMagenta)
+		value = color.New(color.FgYellow)
+
+		side.Print("DST: ")
+		value.Print(ethernetPacket.DstMAC, "     | ")
+
+		side.Print("SRC: ")
+		value.Print(ethernetPacket.SrcMAC, "     |")
+
+		// Ethernet type is typically IPv4 but could be ARP or other
+		side.Print("Type: ")
+		value.Print(ethernetPacket.EthernetType)
+
+		fmt.Println('\n')
+	}
 
 	// Let's see if the packet is IP (even though the ether type told us)
 	ipLayer := packet.Layer(layers.LayerTypeIPv4)
 	if ipLayer != nil {
 		ip, _ := ipLayer.(*layers.IPv4)
 
-		side := color.New(color.FgCyan)
-		value := color.New(color.FgYellow)
+		side = color.New(color.FgCyan)
+		value = color.New(color.FgYellow)
 
 		side.Print("IP Version: ")
 		value.Print(ip.Version, " | ")
@@ -64,7 +77,7 @@ func printPacketInfo(packet gopacket.Packet) {
 		side.Print("TOS: ")
 		value.Print(ip.TOS, " | ")
 		side.Print("Length: ")
-		value.Print(ip.Length, " 	 |\n")
+		value.Print(ip.Length, " 	  |\n")
 		side.Print("     ID: ")
 		value.Print(ip.Id)
 		value.Print("           | ")
