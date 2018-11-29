@@ -1,14 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"time"
 
 	"github.com/fatih/color"
 
 	"github.com/google/gopacket"
-	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"github.com/net/utils"
 )
@@ -42,45 +40,11 @@ func main() {
 }
 
 func printPacketInfo(packet gopacket.Packet) {
-	// Let's see if the packet is an ethernet packet
 
-	utils.PPEthernetPacket(packet)
+	// utils.PPEthernetPacket(packet)
 
-	// Let's see if the packet is IP (even though the ether type told us)
-	ipLayer := packet.Layer(layers.LayerTypeIPv4)
-	if ipLayer != nil {
-		ip, _ := ipLayer.(*layers.IPv4)
+	// utils.PPIPPacket(packet)
 
-		side = color.New(color.FgCyan)
-		value = color.New(color.FgYellow)
+	utils.PPTcpPacket(packet)
 
-		side.Print("IP Version: ")
-		value.Print(ip.Version, " | ")
-		side.Print("IHL: ")
-		value.Print(ip.IHL, "   | ")
-		side.Print("TOS: ")
-		value.Print(ip.TOS, " | ")
-		side.Print("Length: ")
-		value.Print(ip.Length, " 	  |\n")
-		side.Print("     ID: ")
-		value.Print(ip.Id)
-		value.Print("           | ")
-		side.Print("Flags: ")
-		value.Print(ip.Flags, "  | ")
-		side.Print("OFF: ")
-		value.Print(ip.FragOffset, " 	   | ")
-		fmt.Println()
-		side.Print("TTL: ")
-		value.Print(ip.TTL, "       | ")
-		side.Print("Pro: ")
-		value.Print(ip.Protocol, "  | ")
-		side.Print("	CHS: ")
-		value.Print(ip.Checksum, "   	   | \n")
-		side.Print("		Src: ")
-		value.Print(ip.SrcIP, "	    	   | \n")
-		side.Print("	        Dst: ")
-		value.Print(ip.DstIP, " 		   |  ")
-
-		fmt.Println("\n\n")
-	}
 }
