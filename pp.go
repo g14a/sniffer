@@ -10,6 +10,7 @@ import (
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
+	"github.com/net/utils"
 )
 
 var (
@@ -42,25 +43,8 @@ func main() {
 
 func printPacketInfo(packet gopacket.Packet) {
 	// Let's see if the packet is an ethernet packet
-	ethernetLayer := packet.Layer(layers.LayerTypeEthernet)
-	if ethernetLayer != nil {
-		ethernetPacket, _ := ethernetLayer.(*layers.Ethernet)
 
-		side = color.New(color.FgHiMagenta)
-		value = color.New(color.FgYellow)
-
-		side.Print("DST: ")
-		value.Print(ethernetPacket.DstMAC, "     | ")
-
-		side.Print("SRC: ")
-		value.Print(ethernetPacket.SrcMAC, "     |")
-
-		// Ethernet type is typically IPv4 but could be ARP or other
-		side.Print("Type: ")
-		value.Print(ethernetPacket.EthernetType)
-
-		fmt.Println('\n')
-	}
+	utils.PPEthernetPacket(packet)
 
 	// Let's see if the packet is IP (even though the ether type told us)
 	ipLayer := packet.Layer(layers.LayerTypeIPv4)
