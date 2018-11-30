@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/fatih/color"
@@ -13,9 +14,9 @@ import (
 )
 
 var (
-	device      string = "wlp2s0"
-	snapshotLen int32  = 1024
-	promiscuous bool   = false
+	device      string
+	snapshotLen int32 = 1024
+	promiscuous bool  = false
 	err         error
 	timeout     time.Duration = 30 * time.Second
 	handle      *pcap.Handle
@@ -28,6 +29,9 @@ var (
 
 func main() {
 	// Open device for capture packets in non-promiscous mode.
+
+	device = os.Args[1]
+
 	handle, err = pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
 	if err != nil {
 		log.Fatal(err)
