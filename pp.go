@@ -36,6 +36,7 @@ func main() {
 
 	count := 0
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
+
 	for packet := range packetSource.Packets() {
 		count++
 		printPacketInfo(packet, count)
