@@ -27,7 +27,7 @@ var (
 )
 
 func main() {
-	// Open device
+	// Open device for capture packets in non-promiscous mode.
 	handle, err = pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
 	if err != nil {
 		log.Fatal(err)
