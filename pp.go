@@ -44,7 +44,9 @@ func main() {
 
 func printPacketInfo(packet gopacket.Packet, count int) {
 
-	fmt.Println("\n\nPACKET ", count, "\n")
+	color.Green("\n---------------------------------------------------------------")
+
+	fmt.Println("PACKET ", count)
 
 	utils.PPEthernetPacket(packet)
 	fmt.Println()
@@ -53,4 +55,6 @@ func printPacketInfo(packet gopacket.Packet, count int) {
 	fmt.Println()
 
 	utils.PPTcpPacket(packet)
+
+	color.Green("\n---------------------------------------------------------------")
 }
