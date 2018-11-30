@@ -50,20 +50,34 @@ func PPTcpPacket(packet gopacket.Packet) {
 
 		side.Print("SrcPort: ")
 		value.Print(tcpPacket.SrcPort)
-		value.Print(" 		|")
 		side.Print("	DstPort: ")
 		value.Print(tcpPacket.DstPort)
-		value.Print("    	|\n")
-		side.Print("SEQ: ")
+		fmt.Println()
+		side.Print("	SEQ: ")
 		value.Print(tcpPacket.Seq)
-		value.Print(" 	|")
+		fmt.Println()
 		side.Print("	ACK: ")
 		value.Print(tcpPacket.Ack)
-		value.Print(" 		|")
+		fmt.Println()
 		side.Print("HLen: ")
 		value.Print(tcpPacket.DataOffset)
-		side.Print("RES: ")
-		value.Print(tcpPacket.)
+
+		flagMap := make(map[string]bool, 9)
+
+		flagMap["NS"] = tcpPacket.NS
+		flagMap["CWR"] = tcpPacket.CWR
+		flagMap["ECE"] = tcpPacket.ECE
+		flagMap["URG"] = tcpPacket.URG
+		flagMap["ACK"] = tcpPacket.ACK
+		flagMap["PSH"] = tcpPacket.PSH
+		flagMap["RST"] = tcpPacket.RST
+		flagMap["SYN"] = tcpPacket.SYN
+		flagMap["FIN"] = tcpPacket.FIN
+
+		PPTCPFlags(flagMap)
+
+		side.Print(" WS : ")
+		value.Print(tcpPacket.Window)
 	}
 }
 
@@ -104,4 +118,20 @@ func PPIPPacket(packet gopacket.Packet) {
 		value.Print(ip.DstIP, " 		   	 |  ")
 
 	}
+}
+
+func PPTCPFlags(m map[string]bool) {
+
+	side = color.New(color.FgCyan)
+	value = color.New(color.FgYellow)
+
+	side.Print(" Flags: ")
+
+	for k, v := range m {
+		if v {
+			value.Print(k, ",")
+		}
+	}
+
+	fmt.Println()
 }
