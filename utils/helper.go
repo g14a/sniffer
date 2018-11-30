@@ -23,6 +23,8 @@ func PPEthernetPacket(packet gopacket.Packet) {
 		side = color.New(color.FgHiMagenta)
 		value = color.New(color.FgYellow)
 
+		fmt.Println("Ethernet Layer Found!")
+
 		side.Print("DST: ")
 		value.Print(ethernetPacket.DstMAC, "     | ")
 
@@ -46,7 +48,7 @@ func PPTcpPacket(packet gopacket.Packet) {
 		side = color.New(color.FgCyan)
 		value = color.New(color.FgYellow)
 
-		fmt.Println("\n\n")
+		fmt.Println("TCP Layer Found!")
 
 		side.Print("SrcPort: ")
 		value.Print(tcpPacket.SrcPort)
@@ -76,8 +78,21 @@ func PPTcpPacket(packet gopacket.Packet) {
 
 		PPTCPFlags(flagMap)
 
-		side.Print(" WS : ")
-		value.Print(tcpPacket.Window)
+		side.Print(" WinSize : ")
+		value.Print(tcpPacket.Window, "\n")
+
+		side.Print("Checksum: ")
+		value.Print(tcpPacket.Checksum)
+
+		side.Print("       URG PTR: ")
+		value.Print(tcpPacket.Urgent, "\n")
+
+		side.Print("	Options: ")
+		options := make([]layers.TCPOption, 0)
+
+		options = tcpPacket.Options
+
+		value.Print(len(options))
 	}
 }
 
@@ -88,6 +103,8 @@ func PPIPPacket(packet gopacket.Packet) {
 
 		side = color.New(color.FgCyan)
 		value = color.New(color.FgYellow)
+
+		fmt.Println("IP Layer Found!")
 
 		side.Print("IP Version: ")
 		value.Print(ip.Version, " | ")
@@ -132,6 +149,4 @@ func PPTCPFlags(m map[string]bool) {
 			value.Print(k, ",")
 		}
 	}
-
-	fmt.Println()
 }

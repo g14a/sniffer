@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -33,18 +34,23 @@ func main() {
 	}
 	defer handle.Close()
 
+	count := 0
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	for packet := range packetSource.Packets() {
-		printPacketInfo(packet)
+		count++
+		printPacketInfo(packet, count)
 	}
 }
 
-func printPacketInfo(packet gopacket.Packet) {
+func printPacketInfo(packet gopacket.Packet, count int) {
 
-	// utils.PPEthernetPacket(packet)
+	fmt.Println("\n\nPACKET ", count, "\n")
 
-	// utils.PPIPPacket(packet)
+	utils.PPEthernetPacket(packet)
+	fmt.Println()
+
+	utils.PPIPPacket(packet)
+	fmt.Println()
 
 	utils.PPTcpPacket(packet)
-
 }
