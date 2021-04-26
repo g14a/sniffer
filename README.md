@@ -11,15 +11,11 @@
 
 ### Local Execution
 
-<h4>Install Golang in Ubuntu</h4>
-
-``` sudo apt install golang-go ```
-
 <h4> Execute the following in home directory</h4>
 
 ``` cd go```
 <br />
-``` git clone https://github.com/gowtham-munukutla/nsd```
+``` git clone https://github.com/g14a/sniffer```
 
 <h4>Install libraries</h4>
 
@@ -29,13 +25,13 @@
 
 <h4> Navigate to </h4> 
 
-``` cd go/src/github.com/nsd ```
+``` cd go/src/github.com/sniffer ```
 <br />
 ``` go build```
 
 <h4> Run the build </h4>
 
-``` ./nsd wlp2s0 ```
+``` ./sniffer wlp2s0 ```
 
 <h4> The second parameter should be your wireless interface. In my case it is </h4>
 
